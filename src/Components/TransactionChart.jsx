@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import CanvasJSReact from '@canvasjs/react-charts';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+import { Box } from '@mui/material';
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const App = () => {
   const [data, setData] = useState([]);
 
+  const locaition = useLocation().pathname
+
+  const user_id = locaition.slice(locaition.lastIndexOf('/') + 1);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/transactions`);
-        const transactions = response.data;
+        const transactions = response.data?.filter(item => item.customer_id == user_id)
         setData(transactions);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
     fetchData();
-  }, []);
+  }, [user_id]);
 
   const structure = data?.map((item) => ({
     x: new Date(item.date),
@@ -38,7 +43,7 @@ const App = () => {
     },
     axisX: {
       valueFormatString: "DD MMM YYYY",
-      intervalType: "day", 
+      intervalType: "day",
     },
     data: [{
       type: "column",
@@ -48,11 +53,14 @@ const App = () => {
     }],
   };
 
-  return (
-    <div>
-      <CanvasJSChart options={options} />
-    </div>
-  );
+  return (<>
+<Box sx={{height:"98vh" ,display:"flex",justifyContent: 'center', alignItems: 'center'}}>
+
+     <CanvasJSChart options={options} />
+</Box>
+
+  </>
+  )
 };
 
 export default App;

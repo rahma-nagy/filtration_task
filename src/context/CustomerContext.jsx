@@ -1,12 +1,13 @@
 
-import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import React, { createContext, useEffect, useState } from 'react';
 
 export const CustomerContext = createContext();
 
 const CustomerProvider = ({ children }) => {
   const [customers, setCustomers] = useState([]);
   const [transactions, setTransactions] = useState([]);
+
 
   useEffect(() => {
     // Fetch data from JSON server
@@ -24,7 +25,7 @@ const CustomerProvider = ({ children }) => {
 
     fetchData();
   }, []);
-
+ 
   return (
     <CustomerContext.Provider value={{ customers, transactions }}>
       {children}
