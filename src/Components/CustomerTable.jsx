@@ -11,12 +11,12 @@ const CustomerTable = () => {
 
 
 
-    const filteredCustomers = customers.filter(customer => {
+  const filteredCustomers = customers.filter(customer => {
     const customerTransactions = transactions.filter(transaction => transaction.customer_id == customer.id);
     const totalAmount = customerTransactions.reduce((total, transaction) => total + transaction.amount, 0);
 
     const matchesName = customer.name.toLowerCase().includes(filterName.toLowerCase());
-    const matchesAmount = filterAmount === '' || totalAmount >= parseFloat(filterAmount);
+    const matchesAmount = filterAmount === '' || totalAmount === parseFloat(filterAmount);
 
     return matchesName && matchesAmount;
   });
@@ -27,14 +27,14 @@ const CustomerTable = () => {
       <Box sx={{ width: '90%', maxWidth: '1200px' }}>
         <Typography variant='h4' sx={{ color: "#D63484", mb: 2, textAlign: 'center' }}>Customer Transactions</Typography>
         <TextField
-          sx={{ width: '100%', mb: 3, bgcolor: "#ffeff9" }}
+          sx={{ width: '50%', mb: 0, bgcolor: "#ffeff9" }}
           label="Search by Name"
           value={filterName}
           onChange={(e) => setFilterName(e.target.value)}
         />
-         <TextField
-          sx={{ width: '100%', mb: 3, bgcolor: "#ffeff9" }}
-          label="Search by Minimum Transaction Amount"
+        <TextField
+          sx={{ width: '50%', mb: 0, bgcolor: "#ffeff9" }}
+          label="Search by Transaction Amount"
           value={filterAmount}
           onChange={(e) => setFilterAmount(e.target.value)}
         />
